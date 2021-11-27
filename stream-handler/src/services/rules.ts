@@ -1,6 +1,8 @@
 import axios from "axios";
 import { config } from "../config";
 import { GetRulesResponse, PostRulesRequestPayload } from "../types";
+import { getMembersOfList } from "./lists";
+import { splitEvery } from "ramda";
 
 const { rulesURL, bearerToken } = config;
 
@@ -18,6 +20,7 @@ export const getAllRules = async (): Promise<GetRulesResponse> => {
 };
 
 export const setRules = async (newRules: PostRulesRequestPayload) => {
+  console.log(newRules);
   const response = await axios.post(rulesURL, newRules, {
     headers: {
       authorization: `Bearer ${bearerToken}`,
@@ -26,7 +29,7 @@ export const setRules = async (newRules: PostRulesRequestPayload) => {
   });
 
   if (response.status !== 201) {
-    throw new Error(response.data);
+    throw new Error(JSON.stringify(response.data));
   }
 
   return response.data;
@@ -63,4 +66,37 @@ export const deleteCurrentRules = async () => {
   return await deleteRules(ids);
 };
 
-export const generateFollowUsersRule = () => {};
+export const generateValueForRuleToFollowTweetsFromUser = (
+  ids: string[],
+  firstIter = true
+): string => {
+  if (ids.length === 1) {
+    return `from:${ids[0]})`;
+  }
+  return `${firstIter ? "(" : ""}from:${
+    ids[0]
+  } OR ${generateValueForRuleToFollowTweetsFromUser(ids.slice(1), false)}`;
+};
+
+export const generateRules = (ids: string[], tag: string) => {
+  const chunks = splitEvery(17, ids);
+  return chunks.map((chunk, i) => {
+    return {
+      value: generateValueForRuleToFollowTweetsFromUser(chunk),
+      tag: `${tag} ${i + 1}`,
+    };
+  });
+};
+
+export const generateRulePayload = (ids: string[], tag: string) => {
+  return {
+    add: generateRules(ids, tag),
+  };
+};
+
+export const generateAndPostRule = async (listId: number, tag: string) => {
+  const members = await getMembersOfList(listId, undefined);
+  const ids = members.map((member) => member.id);
+  const rulePayload = generateRulePayload(ids, tag);
+  return setRules(rulePayload);
+};

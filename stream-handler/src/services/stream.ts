@@ -1,5 +1,6 @@
 import { get } from "needle";
 import { config } from "../config";
+import { isJsonString } from "../helpers";
 
 const { streamURL, bearerToken } = config;
 
@@ -12,10 +13,12 @@ export const streamConnect = async (retryAttempt: number) => {
   });
   stream.on("data", (json) => {
     try {
-      const data = JSON.parse(json);
-      console.log(data);
+      if (isJsonString(json)) {
+        const data = JSON.parse(json);
+        console.log(data);
+      }
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   });
   stream.on("err", (error) => {

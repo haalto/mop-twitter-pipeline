@@ -27,4 +27,6 @@ export const config = {
   bearerToken: process.env.BEARER_TOKEN,
   rulesURL: "https://api.twitter.com/2/tweets/search/stream/rules",
   streamURL,
+  listsURL: "https://api.twitter.com/2/lists",
+  listOfMOP: 203337069,
 };
