@@ -1,11 +1,14 @@
 import { get } from "needle";
 import { config } from "../config";
 import { isJSONString } from "../helpers";
-import { appendFileSync } from "fs";
+import { getChannel, getQueue } from "./mq";
 
 const { streamURL, bearerToken } = config;
 
 export const streamConnect = async (retryAttempt: number) => {
+  const channel = await getChannel();
+  const queue = await getQueue();
+
   const stream = get(streamURL, {
     headers: {
       "User-Agent": "parlament-stream",
@@ -15,9 +18,7 @@ export const streamConnect = async (retryAttempt: number) => {
   stream.on("data", (json) => {
     try {
       if (isJSONString(json)) {
-        const data = JSON.parse(json);
-        console.log(data);
-        appendFileSync("data.txt", `${JSON.stringify(data)}\n`);
+        channel.sendToQueue(queue.queue, Buffer.from(json));
       }
     } catch (err) {
       console.log(err);

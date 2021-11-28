@@ -19,4 +19,6 @@ export const config = {
   streamURL,
   listsURL: "https://api.twitter.com/2/lists",
   listOfMOP: 203337069,
+  queueName: process.env.MQ_NAME || "tweets",
+  mqUrl: process.env.MQ_URL || "amqp://mq:5672",
 };

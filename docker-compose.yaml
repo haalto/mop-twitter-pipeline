@@ -22,5 +22,12 @@ services:
     depends_on:
       - mq
     command: ["./wait-for-it.sh", "mq:5672", "--", "npm", "start"]
+  mq-worker:
+    build:
+      context: ./mq-worker
+      dockerfile: Dockerfile
+    depends_on:
+      - mq
+    command: ["./wait-for-it.sh", "mq:5672", "--", "npm", "start"]
 volumes:
   neo4j_data:
