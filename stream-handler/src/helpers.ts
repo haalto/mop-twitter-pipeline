@@ -1,4 +1,4 @@
-export const isJsonString = (data: any) => {
+export const isJSONString = (data: any) => {
   try {
     JSON.parse(data);
   } catch (e) {

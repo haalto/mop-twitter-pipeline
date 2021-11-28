@@ -1,25 +1,15 @@
 import * as dotenv from "dotenv";
-import { PostRulesRequestPayload } from "./types";
+import { stringify } from "querystring";
 dotenv.config({ path: `${__dirname}/../.env` });
-
-export const rules: PostRulesRequestPayload = {
-  add: [
-    {
-      value: "dog has:images -is:retweet",
-      tag: "dog pictures",
-    },
-    {
-      value: "cat has:images -grumpy",
-      tag: "cat pictures",
-    },
-  ],
-};
 
 export const params = {
   expansions: "author_id",
+  "tweet.fields": "created_at,entities,context_annotations",
 };
 
-const streamURL = `https://api.twitter.com/2/tweets/search/stream?expansions=${params.expansions}`;
+const streamURL = `https://api.twitter.com/2/tweets/search/stream?${stringify(
+  params
+)}`;
 
 export const config = {
   apiKey: process.env.API_KEY,

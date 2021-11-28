@@ -1,6 +1,7 @@
 import { get } from "needle";
 import { config } from "../config";
-import { isJsonString } from "../helpers";
+import { isJSONString } from "../helpers";
+import { appendFileSync } from "fs";
 
 const { streamURL, bearerToken } = config;
 
@@ -13,9 +14,10 @@ export const streamConnect = async (retryAttempt: number) => {
   });
   stream.on("data", (json) => {
     try {
-      if (isJsonString(json)) {
+      if (isJSONString(json)) {
         const data = JSON.parse(json);
         console.log(data);
+        appendFileSync("data.txt", `${JSON.stringify(data)}\n`);
       }
     } catch (err) {
       console.log(err);
