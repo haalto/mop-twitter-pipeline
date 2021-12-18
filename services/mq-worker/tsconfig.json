@@ -10,6 +10,5 @@
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
-  },
-  "include": ["./src/**/*", "src/.eslintrc.js"]
+  }
 }

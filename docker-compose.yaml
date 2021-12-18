@@ -6,6 +6,8 @@ services:
     ports:
       - 7474:7474
       - 7687:7687
+    volumes:
+      - neo4j_data:/data/
     environment:
       - NEO4J_AUTH=none
   mq:
@@ -27,3 +29,5 @@ services:
     depends_on:
       - mq
     command: ["./wait-for-it.sh", "mq:5672", "--", "npm", "start"]
+volumes:
+  neo4j_data:

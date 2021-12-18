@@ -1,5 +1,5 @@
 import { getChannel, getQueue } from "./services/mq";
-import { createTweet } from "./services/tweets";
+import { createTweet } from "./services/tweetServices";
 import { StreamObject } from "./types";
 
 (async () => {
@@ -12,6 +12,7 @@ import { StreamObject } from "./types";
     async (msg) => {
       if (msg) {
         try {
+          console.log(msg.content.toString());
           const parsedMessage = JSON.parse(
             msg.content.toString()
           ) as StreamObject;
