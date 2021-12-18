@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "../config";
 import { GetRulesResponse, PostRulesRequestPayload } from "../types";
-import { getMembersOfList } from "./lists";
+import { getUsersOfList } from "./lists";
 import { splitEvery } from "ramda";
 
 const { rulesURL, bearerToken } = config;
@@ -95,8 +95,19 @@ export const generateRulePayload = (ids: string[], tag: string) => {
 };
 
 export const generateAndPostRule = async (listId: number, tag: string) => {
-  const members = await getMembersOfList(listId, undefined);
-  const ids = members.map((member) => member.id);
+  const users = await getUsersOfList(listId, undefined);
+  const ids = users.map((user) => user.id);
   const rulePayload = generateRulePayload(ids, tag);
   return setRules(rulePayload);
+};
+
+export const setRulesIfNotSet = async () => {
+  const { listOfMOP } = config;
+  const response = await getAllRules();
+  if (response.meta.result_count === 0) {
+    await generateAndPostRule(
+      listOfMOP,
+      "Get Tweets from Finnish Members of Parlament"
+    );
+  }
 };

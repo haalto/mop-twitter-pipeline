@@ -18,4 +18,4 @@ export type PostRulesRequestPayload = {
 
 export type NewRule = Omit<Rule, "id">;
 
-export type Member = { id: string; username: string; name: string };
+export type User = { id: string; username: string; name: string };

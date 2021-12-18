@@ -7,13 +7,19 @@ const getConnection = () => {
   return connect(mqUrl);
 };
 
-export const getChannel = async () => {
+const getChannel = async () => {
   const connection = await getConnection();
   return connection.createChannel();
 };
 
-export const getQueue = async () => {
+const getQueue = async () => {
   const channel = await getChannel();
   const queue = channel.assertQueue(queueName);
   return queue;
+};
+
+export const sendToQueue = async (message: Buffer) => {
+  const channel = await getChannel();
+  const queue = await getQueue();
+  channel.sendToQueue(queue.queue, message);
 };

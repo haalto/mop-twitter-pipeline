@@ -1,23 +1,15 @@
 import { config } from "./config";
-import { generateAndPostRule, getAllRules } from "./services/rules";
+import { getUsersOfList } from "./services/lists";
+import { setRulesIfNotSet } from "./services/rules";
 import { streamConnect } from "./services/stream";
-
-const setRulesIfNotSet = async () => {
-  const { listOfMOP } = config;
-  const response = await getAllRules();
-  if (response.meta.result_count === 0) {
-    await generateAndPostRule(
-      listOfMOP,
-      "Get Tweets from Finnish Members of Parlament"
-    );
-  }
-};
+import { createUsersBatch } from "./services/userServices";
 
 (async () => {
   try {
     await setRulesIfNotSet();
-    const response = await getAllRules();
-    console.log(response);
+    const { listOfMOP } = config;
+    const users = await getUsersOfList(listOfMOP, undefined);
+    createUsersBatch(users);
     streamConnect(0);
   } catch (err) {
     console.log(err);

@@ -4,7 +4,8 @@ dotenv.config({ path: `${__dirname}/../.env` });
 
 export const params = {
   expansions: "author_id",
-  "tweet.fields": "created_at,entities,context_annotations",
+  tweet_mode: "extended",
+  "tweet.fields": "created_at,entities,context_annotations,text,geo,full_text",
 };
 
 const streamURL = `https://api.twitter.com/2/tweets/search/stream?${stringify(
@@ -21,4 +22,5 @@ export const config = {
   listOfMOP: 203337069,
   queueName: process.env.MQ_NAME || "tweets",
   mqUrl: process.env.MQ_URL || "amqp://mq:5672",
+  dbUrl: process.env.DB_URL || "bolt://neo4j:7687",
 };

@@ -1,12 +1,12 @@
 import axios from "axios";
 import { config } from "../config";
 import { stringify } from "querystring";
-import { Member } from "../types";
+import { User } from "../types";
 
-export const getMembersOfList = async (
+export const getUsersOfList = async (
   listId: number,
   next_token: undefined
-): Promise<Member[]> => {
+): Promise<User[]> => {
   const { listsURL, bearerToken } = config;
   const url = `${listsURL}/${listId}/members${
     next_token ? `?${stringify({ pagination_token: next_token })}` : ""
@@ -17,10 +17,10 @@ export const getMembersOfList = async (
       Authorization: `Bearer ${bearerToken}`,
     },
   });
-  const data = response.data.data;
+  const data = response.data.data as User[];
   if (response.data.meta.next_token) {
     return data.concat(
-      await getMembersOfList(listId, response.data.meta.next_token)
+      await getUsersOfList(listId, response.data.meta.next_token)
     );
   } else {
     return data;
