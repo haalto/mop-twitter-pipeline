@@ -1,0 +1,18 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "migrate:latest": "npx ts-node index.ts latest",
+    "migrate:create": "npx ts-node index.ts create",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "neo4j-driver": "^4.4.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  }
+}

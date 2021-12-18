@@ -1,13 +1,11 @@
 version: "3.6"
 
 services:
-  neo:
+  neo4j:
     image: neo4j:latest
     ports:
       - 7474:7474
       - 7687:7687
-    volumes:
-      - neo4j_data:/data/
     environment:
       - NEO4J_AUTH=none
   mq:
@@ -17,17 +15,15 @@ services:
       - 15672:15672
   stream-handler:
     build:
-      context: ./stream-handler
+      context: ./services/stream-handler
       dockerfile: Dockerfile
     depends_on:
       - mq
     command: ["./wait-for-it.sh", "mq:5672", "--", "npm", "start"]
   mq-worker:
     build:
-      context: ./mq-worker
+      context: ./services/mq-worker
       dockerfile: Dockerfile
     depends_on:
       - mq
     command: ["./wait-for-it.sh", "mq:5672", "--", "npm", "start"]
-volumes:
-  neo4j_data:

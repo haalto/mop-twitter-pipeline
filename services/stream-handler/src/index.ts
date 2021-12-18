@@ -1,10 +1,5 @@
 import { config } from "./config";
-import { getQueue } from "./services/mq";
-import {
-  deleteCurrentRules,
-  generateAndPostRule,
-  getAllRules,
-} from "./services/rules";
+import { generateAndPostRule, getAllRules } from "./services/rules";
 import { streamConnect } from "./services/stream";
 
 const setRulesIfNotSet = async () => {
@@ -20,11 +15,9 @@ const setRulesIfNotSet = async () => {
 
 (async () => {
   try {
-    // await deleteCurrentRules
     await setRulesIfNotSet();
     const response = await getAllRules();
     console.log(response);
-    const queue = await getQueue();
     streamConnect(0);
   } catch (err) {
     console.log(err);
