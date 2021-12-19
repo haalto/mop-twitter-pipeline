@@ -4,8 +4,7 @@ dotenv.config({ path: `${__dirname}/../.env` });
 
 export const params = {
   expansions: "author_id",
-  tweet_mode: "extended",
-  "tweet.fields": "created_at,entities,context_annotations,text,geo,full_text",
+  "tweet.fields": "created_at,entities,context_annotations,text,geo",
 };
 
 const streamURL = `https://api.twitter.com/2/tweets/search/stream?${stringify(
