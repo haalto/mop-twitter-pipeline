@@ -1,8 +1,12 @@
 import { useUsers } from "../hooks/useUsers";
-import { Graph } from "react-d3-graph";
+import { SigmaContainer } from "react-sigma-v2";
+import "react-sigma-v2/lib/react-sigma-v2.css";
+import { DataGraph } from "../components/Graph";
+import { useTweets } from "../hooks/useTweets";
 
 export const Dashboard = () => {
-  const { loading, data, error } = useUsers();
+  //const { loading, data, error } = useUsers();
+  const { loading, data, error } = useTweets();
 
   if (loading) {
     return <div>loading</div>;
@@ -12,32 +16,11 @@ export const Dashboard = () => {
     return <div>error</div>;
   }
 
-  const testData = {
-    nodes: data,
-    links: [],
-  };
-
-  console.log(data);
   return (
     <div>
-      <h1>Moro</h1>
-      <Graph
-        id="foo"
-        data={testData}
-        config={{
-          nodeHighlightBehavior: true,
-          node: {
-            color: "lightgreen",
-            size: 400,
-            highlightStrokeColor: "blue",
-          },
-          link: {
-            highlightColor: "lightblue",
-          },
-          width: 2000,
-          height: 2000,
-        }}
-      />
+      <SigmaContainer style={{ height: "100vh", width: "100vw" }}>
+        <DataGraph data={data} />
+      </SigmaContainer>
     </div>
   );
 };
