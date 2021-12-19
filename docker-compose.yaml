@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3.9"
 
 services:
   neo4j:
@@ -29,5 +29,19 @@ services:
     depends_on:
       - mq
     command: ["./wait-for-it.sh", "mq:5672", "--", "npm", "start"]
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+    depends_on:
+      - neo4j
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./services/api:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: ["./wait-for-it.sh", "neo4j:7687", "--", "npm", "start"]
 volumes:
   neo4j_data:
