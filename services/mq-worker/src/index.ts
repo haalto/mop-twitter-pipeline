@@ -3,6 +3,8 @@ import { createTweet } from "./services/tweetServices";
 import { StreamObject } from "./types";
 
 (async () => {
+  console.log("Start MQ-worker");
+
   const channel = await getChannel();
   const queue = await getQueue();
 

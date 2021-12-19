@@ -21,6 +21,9 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - mq
+    volumes:
+      - ./services/stream-handler:/usr/src/app
+      - /usr/src/app/node_modules
     command: ["./wait-for-it.sh", "mq:5672", "--", "npm", "start"]
   mq-worker:
     build:
@@ -28,6 +31,9 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - mq
+    volumes:
+      - ./services/mq-worker:/usr/src/app
+      - /usr/src/app/node_modules
     command: ["./wait-for-it.sh", "mq:5672", "--", "npm", "start"]
   api:
     build:

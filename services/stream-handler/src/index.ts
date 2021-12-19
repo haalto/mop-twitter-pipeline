@@ -5,6 +5,7 @@ import { streamConnect } from "./services/stream";
 import { createUsersBatch } from "./services/userServices";
 
 (async () => {
+  console.log("Start Stream handler");
   try {
     await setRulesIfNotSet();
     const { listOfMOP } = config;
