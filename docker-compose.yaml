@@ -49,5 +49,17 @@ services:
     environment:
       - NODE_ENV=development
     command: ["./wait-for-it.sh", "neo4j:7687", "--", "npm", "start"]
+  client:
+    build:
+      context: ./services/client
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
 volumes:
   neo4j_data:

@@ -1,6 +1,6 @@
-# mop-twitter-pipeline
+### mop-twitter-pipeline
 
-Local
+# Local
 
-RabbbitMQ dashboard `localhost:15672` `guest/guest`
-Neo4J browser `localhost:7474`
+- RabbbitMQ dashboard `localhost:15672` `guest/guest`
+- Neo4J browser `localhost:7474`
